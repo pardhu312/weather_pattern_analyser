@@ -98,10 +98,11 @@ services:
         value: "*"
 
   # ============================================================================
-  # 3. Weather Frontend (React / Vite Single Page App)
+  # 3. Weather Frontend (React / Vite Static Site)
   # ============================================================================
-  - type: static
+  - type: web
     name: weather-frontend
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
@@ -110,11 +111,8 @@ services:
         source: /*
         destination: /index.html
     envVars:
-      # Set to the public URLs of your deployed Render services:
-      # e.g., https://weather-api.onrender.com
       - key: VITE_WEATHER_API_URL
         sync: false
-      # e.g., https://weather-ml-service.onrender.com
       - key: VITE_ML_API_URL
         sync: false
 
