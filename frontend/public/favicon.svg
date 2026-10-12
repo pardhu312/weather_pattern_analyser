@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a" />
+      <stop offset="50%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#cbd5e1" />
+    </linearGradient>
+    <linearGradient id="sunGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Modern Dark Rounded App Icon Container -->
+  <rect width="64" height="64" rx="16" fill="#080f1e" />
+  <rect x="1.5" y="1.5" width="61" height="61" rx="14.5" fill="url(#bgGrad)" fill-opacity="0.2" stroke="url(#bgGrad)" stroke-width="1.5" />
+
+  <!-- Ambient Glow Behind Sun -->
+  <circle cx="41" cy="22" r="10" fill="#f59e0b" opacity="0.3" filter="url(#glow)" />
+
+  <!-- Sun Body -->
+  <circle cx="41" cy="22" r="8" fill="url(#sunGrad)" />
+
+  <!-- Sun Rays -->
+  <g stroke="#fbbf24" stroke-width="1.6" stroke-linecap="round" opacity="0.9">
+    <line x1="41" y1="10" x2="41" y2="12.5" />
+    <line x1="41" y1="31.5" x2="41" y2="34" />
+    <line x1="29" y1="22" x2="31.5" y2="22" />
+    <line x1="50.5" y1="22" x2="53" y2="22" />
+    <line x1="32.5" y1="13.5" x2="34.3" y2="15.3" />
+    <line x1="47.7" y1="28.7" x2="49.5" y2="30.5" />
+    <line x1="32.5" y1="30.5" x2="34.3" y2="28.7" />
+    <line x1="47.7" y1="15.3" x2="49.5" y2="13.5" />
+  </g>
+
+  <!-- Weather Cloud -->
+  <path d="M21 42h23a8.5 8.5 0 0 0 1.5-16.85A12.5 12.5 0 0 0 21.2 27.4 7.5 7.5 0 0 0 21 42z" fill="url(#cloudGrad)" />
+
+  <!-- AI / ML Pattern Pulse Vector Lines -->
+  <path d="M18 49l4-4 4 3 6-5 5 3" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="37" cy="46" r="1.6" fill="#38bdf8" />
+  <circle cx="32" cy="43" r="1.6" fill="#60a5fa" />
+</svg>

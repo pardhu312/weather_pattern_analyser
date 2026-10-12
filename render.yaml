@@ -1,0 +1,129 @@
+# Render Blueprint Specification (Infrastructure as Code)
+# Docs: https://render.com/docs/blueprint-spec
+version: "1"
+
+services:
+  # ============================================================================
+  # 1. Weather Backend API (Spring Boot 4 / Java 17)
+  # ============================================================================
+  - type: web
+    name: weather-api
+    runtime: docker
+    rootDir: weather-api
+    dockerfilePath: Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /api/health
+    envVars:
+      # Database Connection (Injected from Render PostgreSQL)
+      - key: DATABASE_URL
+        fromDatabase:
+          name: weather-db
+          property: connectionString
+      - key: DB_HOST
+        fromDatabase:
+          name: weather-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: weather-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: weather-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: weather-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: weather-db
+          property: password
+
+      # OpenWeather API Key (prompted in Render dashboard on first deploy)
+      - key: OPENWEATHER_API_KEY
+        sync: false
+
+      # Authentication & Security
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_EMAIL
+        value: admin@weather.local
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        value: "*"
+
+  # ============================================================================
+  # 2. ML & Analytics Service (FastAPI / Python)
+  # ============================================================================
+  - type: web
+    name: weather-ml-service
+    runtime: docker
+    rootDir: ml-service
+    dockerfilePath: Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    envVars:
+      # Database Connection (Injected from Render PostgreSQL)
+      - key: DATABASE_URL
+        fromDatabase:
+          name: weather-db
+          property: connectionString
+      - key: DB_HOST
+        fromDatabase:
+          name: weather-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: weather-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: weather-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: weather-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: weather-db
+          property: password
+      - key: CORS_ALLOWED_ORIGINS
+        value: "*"
+
+  # ============================================================================
+  # 3. Weather Frontend (React / Vite Single Page App)
+  # ============================================================================
+  - type: static
+    name: weather-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      # Set to the public URLs of your deployed Render services:
+      # e.g., https://weather-api.onrender.com
+      - key: VITE_WEATHER_API_URL
+        sync: false
+      # e.g., https://weather-ml-service.onrender.com
+      - key: VITE_ML_API_URL
+        sync: false
+
+# ==============================================================================
+# Managed PostgreSQL Database
+# ==============================================================================
+databases:
+  - name: weather-db
+    databaseName: weather_db
+    user: weather_user
+    plan: free
+    region: oregon
